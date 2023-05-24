@@ -1,4 +1,5 @@
-from train import train
+from train import train_slr, train_lor
     
 if __name__ == '__main__':
-    train()
+    train_slr()
+    train_lor()
