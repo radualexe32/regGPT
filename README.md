@@ -1,6 +1,8 @@
 # RegGPT
 
-A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`.
+A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`.o
+
+<img src = "./scripts/slr.gif", alt = "Animation of SLR Training", height = 300px/>
 
 ## Dependencies
 
