@@ -35,5 +35,5 @@ def plot_slr():
         mse_text.set_text(f'MSE = {reg.mse_hist[i]:.2f}')
         return line1, line2, textbox, mse_text
 
-    ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 5) 
+    ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 10) 
     plt.show()
