@@ -1,12 +1,15 @@
 import numpy as np
 
+def MSE(y_test, pred):
+    return np.mean((y_test - pred) ** 2)
+
+
 class LinearRegression:
     def __init__(self, rate = 0.001, epochs = 1000):
         self.rate = rate
         self.epochs = epochs
-        self.w = None 
-        self.b = None
-        self.w_hist, self.b_hist = [], []
+        self.w, self.b = None, None
+        self.w_hist, self.b_hist, self.mse_hist = [], [], []
 
     def fit(self, X, y):
         samples, features = X.shape
@@ -19,6 +22,7 @@ class LinearRegression:
             self.b -= self.rate * (2 / samples) * np.sum(y_hat - y)
             self.w_hist.append(self.w.copy())
             self.b_hist.append(self.b)
+            self.mse_hist.append(MSE(y, y_hat))
 
     def predict(self, X):
         return np.dot(X, self.w) + self.b
