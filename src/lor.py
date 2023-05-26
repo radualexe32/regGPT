@@ -18,8 +18,8 @@ class LogisticRegression:
         for _ in range(self.epochs):
             pred = sigmoid(np.dot(X, self.w) + self.b)
 
-            self.w -= self.rate * (1 / samples) * np.dot(X.T, (pred - y))
-            self.b -= self.rate * np.sum(pred - y)
+            self.w -= self.rate * (2 / samples) * np.dot(X.T, (pred - y))
+            self.b -= self.rate * (2/ samples) * np.sum(pred - y)
 
     def predict(self, X):
         y_hat = sigmoid(np.dot(X, self.w) + self.b)
