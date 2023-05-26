@@ -6,7 +6,8 @@ import matplotlib.animation as animation
 from slr import LinearRegression
 from lor import LogisticRegression
 
-plt.style.use("dark_background")
+#plt.style.use("dark_background")
+plt.style.use("seaborn-darkgrid")
 
 def data(samples = 100, features = 1, noise = 20, degree = 1):
     X, y = datasets.make_regression(n_samples = samples, n_features = features, noise = noise, random_state = 42)
@@ -37,12 +38,7 @@ def plot_slr():
         mse_text.set_text(f'MSE = {reg.mse_hist[i]:.2f}')
         return line1, line2, textbox, mse_text
 
-    ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 5, repeat = False) 
-    ani.save("slr.gif", writer = "pillow", fps = 60)
-    ax.grid(color = "gray", linewidth = 0.5, linestyle = "--")
-    ax.set_xlabel("X")
-    ax.set_ylabel("y")
-    ax.set_title("Simple Linear Regression Training")
+    ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 5) 
     plt.show()
 
 def train_lor():
