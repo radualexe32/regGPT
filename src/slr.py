@@ -15,8 +15,8 @@ class LinearRegression:
 
         for _ in range(self.epochs):
             y_hat = np.dot(X, self.w) + self.b
-            self.w -= self.rate * (1 / samples) * np.dot(X.T, (y_hat - y))
-            self.b -= self.rate * (1 / samples) * np.sum(y_hat - y)
+            self.w -= self.rate * (2 / samples) * np.dot(X.T, (y_hat - y))
+            self.b -= self.rate * (2 / samples) * np.sum(y_hat - y)
             self.w_hist.append(self.w.copy())
             self.b_hist.append(self.b)
 
