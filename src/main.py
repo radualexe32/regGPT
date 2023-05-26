@@ -1,5 +1,6 @@
-from train import train_slr, train_lor
+from train import *
     
-if __name__ == '__main__':
-    train_slr()
-    train_lor()
+if __name__ == "__main__":
+    #train_slr()
+    #train_lor()
+    plot_slr()

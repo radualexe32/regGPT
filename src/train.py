@@ -6,25 +6,23 @@ import matplotlib.animation as animation
 from slr import LinearRegression
 from lor import LogisticRegression
 
+X, y = datasets.make_regression(n_samples = 100, n_features = 1, noise = 20, random_state = 42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
+
 def MSE(y_test, pred):
     return np.mean((y_test - pred) ** 2)
 
-def plot(X, X_train, y_train, X_test, y_test, y_pred_line):
-    plt.figure(figsize = (8, 6))
-    plt.scatter(X_train, y_train)
-    plt.plot(X, y_pred_line, color = "red", linewidth = 1, label = "Prediction")
-    plt.show()
-
-def train_slr():
-    X, y = datasets.make_regression(n_samples = 100, n_features = 1, noise = 20, random_state = 42)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
-    reg = LinearRegression(rate = 0.01, epochs = 1000)
+def train_slr(rate = 0.01, epochs = 1000):
+    reg = LinearRegression(rate = rate, epochs = epochs)
     reg.fit(X_train, y_train)
     pred = reg.predict(X_test)
 
     print(f"MSE = {MSE(y_test, pred)}")
     print(f"Reg Line: y = {reg.w[0]}x + {reg.b}")
+    return reg
 
+def plot_slr():
+    reg = train_slr()
     fig, ax = plt.subplots()
     line, = ax.plot(X, reg.w_hist[0] * X + reg.b_hist[0], 'r')  
     plt.scatter(X_train, y_train)
@@ -37,6 +35,8 @@ def train_slr():
 
     ani = animation.FuncAnimation(fig, animate, frames=range(len(reg.w_hist)), interval=5, repeat=False) 
     plt.show()
+
+
     
 def train_lor():
     bc = datasets.load_breast_cancer()

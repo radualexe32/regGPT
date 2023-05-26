@@ -8,7 +8,7 @@ from train import MSE
 from slr import LinearRegression
 
 X, y = make_regression(n_samples = 100, n_features = 1, noise = 20, random_state = 42)
-y = y**2  
+y = y**2 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
     
 def basis_train(reg = LinearRegression(), degrees = 2):
