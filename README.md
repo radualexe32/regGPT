@@ -4,14 +4,9 @@ A machine learning model that automatically fits the best regression line to any
 
 ## Dependencies
 
-To setup this project first we will need to create our own virtual environment. To do this, run the file in the root directory,
+The build for this program can be entirely done by running one of the scripting files suitable for your operating system and terminal of choice. For Windows CMD we use the `build.bat` file, while for Windows Powershell you run the `build.ps1` file. For example, running
 
-```bash
-$ .\build.sh
+```powershell
+.\build.ps1
 ```
-
-If your operating system is not Unix or MacOS then run the `*.bat` file instead.
-
-```bash
-> .\build.bat
-```
+In the root directory of the project will build the project including all pip related dependencies.
