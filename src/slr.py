@@ -3,7 +3,6 @@ import numpy as np
 def MSE(y_test, pred):
     return np.mean((y_test - pred) ** 2)
 
-
 class LinearRegression:
     def __init__(self, rate = 0.001, epochs = 1000):
         self.rate = rate

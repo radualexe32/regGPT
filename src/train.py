@@ -1,12 +1,9 @@
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation 
 from slr import LinearRegression
-from lor import LogisticRegression
 
-#plt.style.use("dark_background")
 plt.style.use("seaborn-darkgrid")
 
 def data(samples = 100, features = 1, noise = 20, degree = 1):
@@ -15,7 +12,7 @@ def data(samples = 100, features = 1, noise = 20, degree = 1):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
     return X, y, X_train, X_test, y_train, y_test
 
-def train_slr(rate = 0.01, epochs = 1000):
+def train_slr(rate = 0.01, epochs = 200):
     X, y, X_train, X_test, y_train, y_test = data()
     reg = LinearRegression(rate = rate, epochs = epochs)
     reg.fit(X_train, y_train)
@@ -40,14 +37,3 @@ def plot_slr():
 
     ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 5) 
     plt.show()
-
-def train_lor():
-    bc = datasets.load_breast_cancer()
-    X, y = bc.data, bc.target
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123)
-
-    reg = LogisticRegression(rate = 0.01)
-    reg.fit(X_train, y_train)
-    pred = reg.predict(X_test)
-
-    print(f"Accuracy = {np.sum(pred == y_test) / len(y_test)}")
