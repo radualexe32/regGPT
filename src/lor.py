@@ -16,16 +16,11 @@ class LogisticRegression:
         self.b = 0 
 
         for _ in range(self.epochs):
-            pred = np.dot(X, self.w) + self.b
-            sig_pred = sigmoid(pred)
+            pred = sigmoid(np.dot(X, self.w) + self.b)
 
-            dw = (1 / samples) * np.dot(X.T, (sig_pred - y))
-            db = (1 / samples) * np.sum(sig_pred - y)
-
-            self.w -= self.rate * dw
-            self.b -= self.rate * db
+            self.w -= self.rate * (1 / samples) * np.dot(X.T, (pred - y))
+            self.b -= self.rate * np.sum(pred - y)
 
     def predict(self, X):
-        pred = np.dot(X, self.w) + self.b
-        y_hat = sigmoid(pred)
+        y_hat = sigmoid(np.dot(X, self.w) + self.b)
         return [0 if i < 0.5 else 1 for i in y_hat]
