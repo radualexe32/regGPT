@@ -2,7 +2,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import datasets
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation 
-from slr import LinearRegression
+from sl_reg import LinearRegression
+from logistic_reg import LogisticRegression
 
 plt.style.use("seaborn-darkgrid")
 

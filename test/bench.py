@@ -3,8 +3,8 @@ import os
 import timeit
 sys.path.append(os.path.join(os.path.dirname(os.getcwd()), "src"))
 
-from slr import * 
-from lor import *
+from sl_reg import * 
+from logistic_reg import *
 from basis_functions import *
 from train import * 
 

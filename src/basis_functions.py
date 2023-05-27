@@ -5,7 +5,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
 from train import MSE
-from slr import LinearRegression
+from sl_reg import LinearRegression
 from train import *
 
 plt.style.use("dark_background")
