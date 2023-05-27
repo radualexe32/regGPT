@@ -13,4 +13,4 @@ The build for this program can be entirely done by running one of the scripting 
 ```powershell
 .\build.ps1
 ```
-In the root directory of the project will build the project including all pip related dependencies.
+In the directory `.\scripts` of the project will build the project including all pip related dependencies.
