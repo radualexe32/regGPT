@@ -3,7 +3,7 @@
 A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`.
 
 <p align = "center">
-    <img src = "./scripts/slr.gif", alt = "SLR animation", height = 300px>
+    <img src = "./assets/slr.gif", alt = "SLR animation", height = 300px>
 </p>
 
 ## Dependencies
