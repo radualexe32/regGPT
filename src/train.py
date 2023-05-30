@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation 
 from sl_reg import LinearRegression
 from logistic_reg import LogisticRegression
+from pol_reg import PolynomialRegression
 
 plt.style.use("seaborn-darkgrid")
 
@@ -37,4 +38,33 @@ def plot_slr():
         return line1, line2, info_text, stat_text
 
     ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 10) 
+    plt.show()
+
+def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2):
+    X, y, X_train, X_test, y_train, y_test = data(degree = degree)
+    reg = PolynomialRegression(degree = degree, rate = rate, epochs = epochs)
+    print(reg.w, reg.b)
+    reg.fit(X_train, y_train)
+    print(reg.w, reg.b)
+
+def plot_pol_reg():
+    X, y, X_train, X_test, y_train, y_test = data(degree = 2)
+    reg = PolynomialRegression(degree = 2)
+    print(reg.w, reg.b)
+    reg.fit(X_train, y_train)
+    print(reg.w, reg.b)
+    reg.fit(X_train, y_train)
+    y_hat = reg.predict(X_train)
+
+    plt.plot(X_train, y_hat, "aqua", lw = 3)
+    plt.plot(X_train, y_hat, "white", lw = 2)
+    plt.scatter(X, y, color = "peru", edgecolors = "black")
+    textstr = '\n'.join((
+        r'$\mathrm{weights}=%.2f,%.2f,%.2f$' % (reg.w[0], reg.w[1], reg.w[2]), 
+        r'$\mathrm{bias}=%.2f$' % (reg.b,), 
+        r'$\mathrm{MSE}=%.2f$' % (reg.mse_hist[-1],), 
+        r'$\mathrm{R^2}=%.2f$' % (reg.r2_hist[-1],)))
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    plt.gca().text(0.45, 0.95, textstr, transform=plt.gca().transAxes, fontsize=10,
+        verticalalignment='top', bbox=props)
     plt.show()
