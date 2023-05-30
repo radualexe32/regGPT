@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from text import *
-from image import *
+from text_model import *
+from image_model import *
 
 class MultimodalModel(nn.Module):
     def __init__(self, text_dimension, hidden_dimension, image_dimension, classes):
