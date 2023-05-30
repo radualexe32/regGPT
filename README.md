@@ -8,9 +8,9 @@ A machine learning model that automatically fits the best regression line to any
 
 ## Dependencies
 
-The build for this program can be entirely done by running one of the scripting files suitable for your operating system and terminal of choice. For Windows CMD we use the `build.bat` file, while for Windows Powershell you run the `build.ps1` file. For example, running
+The build for this program can be entirely done by running one of the scripting files suitable for your operating system and terminal of choice. If you are using the Windows CMD terminal then run the `.\build.bat` file while running the `.\build.ps1` file for Windows powershell. For any WLS or Linux based terminal system run the following command,
 
-```powershell
-.\build.ps1
+```bash
+source ./scripts/build.sh
 ```
-In the directory `.\scripts` of the project will build the project including all pip related dependencies.
+If you are unable to run the above command due any permission issues then run the command `chmod +x ./scripts/build.sh` to give the `build.sh` file the necessary permissions to be executed.
