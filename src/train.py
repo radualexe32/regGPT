@@ -17,16 +17,16 @@ def data(samples = 100, features = 1, noise = 5, degree = 1):
 def train_slr(rate = 0.01, epochs = 200, mini_batch = False):
     X, y, X_train, X_test, y_train, y_test = data()
     reg = LinearRegression(rate = rate, epochs = epochs)
-
-    if mini_batch:
+    if not mini_batch:
         reg.fit(X_train, y_train)
     else:
         reg.fit_mini_batch(X_train, y_train)
+    print(f"y = {reg.w}x + {reg.b} --> Mini-Batch GD: {mini_batch}")
     return reg
 
-def plot_slr():
+def plot_slr(mini_batch = False):
     X, y, X_train, X_test, y_train, y_test = data()
-    reg = train_slr()
+    reg = train_slr(mini_batch = mini_batch)
     fig, ax = plt.subplots()
     line1, = ax.plot(X, reg.w_hist[0] * X + reg.b_hist[0], "aqua", lw = 3)
     line2, = ax.plot(X, reg.w_hist[0] * X + reg.b_hist[0], "white", lw = 2)  
@@ -44,20 +44,19 @@ def plot_slr():
     ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 10) 
     plt.show()
 
-def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2):
+def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2, mini_batch = False):
     X, y, X_train, X_test, y_train, y_test = data(degree = degree)
     reg = PolynomialRegression(degree = degree, rate = rate, epochs = epochs)
-    print(reg.w, reg.b)
-    reg.fit(X_train, y_train)
-    print(reg.w, reg.b)
+    if not mini_batch:
+        reg.fit(X_train, y_train)
+    else:
+        reg.fit_mini_batch(X_train, y_train)
+    print(f"y = {reg.w}x + {reg.b} --> Mini-Batch GD: {mini_batch}")
+    return reg
 
-def plot_pol_reg():
+def plot_pol_reg(mini_batch = False):
     X, y, X_train, X_test, y_train, y_test = data(degree = 2)
-    reg = PolynomialRegression(degree = 2)
-    print(reg.w, reg.b)
-    reg.fit(X_train, y_train)
-    print(reg.w, reg.b)
-    reg.fit(X_train, y_train)
+    reg = train_pol_reg(mini_batch = mini_batch)
     y_hat = reg.predict(X_train)
 
     plt.plot(X_train, y_hat, "aqua", lw = 3)
@@ -68,7 +67,7 @@ def plot_pol_reg():
         r'$\mathrm{bias}=%.2f$' % (reg.b,), 
         r'$\mathrm{MSE}=%.2f$' % (reg.mse_hist[-1],), 
         r'$\mathrm{R^2}=%.2f$' % (reg.r2_hist[-1],)))
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-    plt.gca().text(0.45, 0.95, textstr, transform=plt.gca().transAxes, fontsize=10,
-        verticalalignment='top', bbox=props)
+    props = dict(boxstyle = "round", facecolor = "wheat", alpha=0.5)
+    plt.gca().text(0.45, 0.95, textstr, transform = plt.gca().transAxes, fontsize = 10,
+        verticalalignment = "top", bbox = props)
     plt.show()
