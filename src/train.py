@@ -14,10 +14,14 @@ def data(samples = 100, features = 1, noise = 5, degree = 1):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
     return X, y, X_train, X_test, y_train, y_test
 
-def train_slr(rate = 0.01, epochs = 200):
+def train_slr(rate = 0.01, epochs = 200, mini_batch = False):
     X, y, X_train, X_test, y_train, y_test = data()
     reg = LinearRegression(rate = rate, epochs = epochs)
-    reg.fit(X_train, y_train)
+
+    if mini_batch:
+        reg.fit(X_train, y_train)
+    else:
+        reg.fit_mini_batch(X_train, y_train)
     return reg
 
 def plot_slr():
