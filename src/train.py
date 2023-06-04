@@ -14,14 +14,15 @@ def data(samples = 100, features = 1, noise = 5, degree = 1):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
     return X, y, X_train, X_test, y_train, y_test
 
-def train_slr(rate = 0.01, epochs = 200, mini_batch = False):
-    X, y, X_train, X_test, y_train, y_test = data()
+def train_slr(rate = 0.01, epochs = 200, mini_batch = False, samples = 100):
+    X, y, X_train, X_test, y_train, y_test = data(samples = samples)
     reg = LinearRegression(rate = rate, epochs = epochs)
     if not mini_batch:
         reg.fit(X_train, y_train)
     else:
         reg.fit_mini_batch(X_train, y_train)
     print(f"y = {reg.w}x + {reg.b} --> Mini-Batch GD: {mini_batch}")
+    print(f"MSE = {reg.mse_hist[-1]}")
     return reg
 
 def plot_slr(mini_batch = False):
@@ -44,14 +45,15 @@ def plot_slr(mini_batch = False):
     ani = animation.FuncAnimation(fig, animate, frames = range(len(reg.w_hist)), interval = 10) 
     plt.show()
 
-def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2, mini_batch = False):
-    X, y, X_train, X_test, y_train, y_test = data(degree = degree)
+def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2, mini_batch = False, samples = 100):
+    X, y, X_train, X_test, y_train, y_test = data(degree = degree, samples = samples)
     reg = PolynomialRegression(degree = degree, rate = rate, epochs = epochs)
     if not mini_batch:
         reg.fit(X_train, y_train)
     else:
         reg.fit_mini_batch(X_train, y_train)
     print(f"y = {reg.w}x + {reg.b} --> Mini-Batch GD: {mini_batch}")
+    print(f"MSE = {reg.mse_hist[-1]}")
     return reg
 
 def plot_pol_reg(mini_batch = False):
