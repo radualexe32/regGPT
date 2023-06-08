@@ -5,6 +5,7 @@ import matplotlib.animation as animation
 from sl_reg import LinearRegression
 from logistic_reg import LogisticRegression
 from pol_reg import PolynomialRegression
+import numpy as np
 
 plt.style.use("seaborn-darkgrid")
 
@@ -61,15 +62,31 @@ def plot_pol_reg(mini_batch = False):
     reg = train_pol_reg(mini_batch = mini_batch)
     y_hat = reg.predict(X_train)
 
-    plt.plot(X_train, y_hat, "aqua", lw = 3)
-    plt.plot(X_train, y_hat, "white", lw = 2)
+    fig, ax = plt.subplots()
+    line1, = ax.plot([], [], "aqua", lw = 3)
+    line2, = ax.plot([], [], "white", lw = 2)
     plt.scatter(X, y, color = "peru", edgecolors = "black")
-    textstr = '\n'.join((
-        r'$\mathrm{weights}=%.2f,%.2f,%.2f$' % (reg.w[0], reg.w[1], reg.w[2]), 
-        r'$\mathrm{bias}=%.2f$' % (reg.b,), 
-        r'$\mathrm{MSE}=%.2f$' % (reg.mse_hist[-1],), 
-        r'$\mathrm{R^2}=%.2f$' % (reg.r2_hist[-1],)))
-    props = dict(boxstyle = "round", facecolor = "wheat", alpha=0.5)
-    plt.gca().text(0.45, 0.95, textstr, transform = plt.gca().transAxes, fontsize = 10,
-        verticalalignment = "top", bbox = props)
+    info_text = ax.text(0.45, 0.95, "", transform = ax.transAxes, fontsize = 10, 
+                        verticalalignment = "top", bbox = dict(boxstyle = "round", facecolor = "wheat", alpha=0.5))
+    
+    def animate(i):
+        if i >= len(reg.w_hist):
+            i = len(reg.w_hist) - 1
+            
+        y_hat = np.dot(reg.polynomial_features(X_train, reg.degree), reg.w_hist[i]) + reg.b_hist[i]
+        sorted_zip = sorted(zip(X_train, y_hat))
+        X_train_sorted, y_hat_sorted = zip(*sorted_zip)
+        line1.set_data(X_train_sorted, y_hat_sorted)
+        line2.set_data(X_train_sorted, y_hat_sorted)
+
+        text = '\n'.join((
+            r'$\mathrm{weights}=%.2f,%.2f,%.2f$' % (reg.w_hist[i][0], reg.w_hist[i][1], reg.w_hist[i][2]),
+            r'$\mathrm{bias}=%.2f$' % (reg.b_hist[i],),
+            r'$\mathrm{MSE}=%.2f$' % (reg.mse_hist[i],),
+            r'$\mathrm{R^2}=%.2f$' % (reg.r2_hist[i],)))
+        info_text.set_text(text)
+
+        return line1, line2, info_text
+
+    ani = animation.FuncAnimation(fig, animate, frames = range(0, len(reg.w_hist), 10), interval = 20, blit = True)
     plt.show()
