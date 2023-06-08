@@ -2,9 +2,12 @@
 
 A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`.
 
-<p align = "center">
-    <img src = "./assets/slr.gif", alt = "SLR animation", height = 300px>
-</p>
+<table>
+  <tr>
+    <td><img src = "./assets/slr.gif" alt = "SLR animation" height = "300px"></td>
+    <td><img src = "./assets/pol_reg.gif" alt = "PolReg animation" height = "300px"></td>
+  </tr>
+</table>
 
 ## Dependencies
 
