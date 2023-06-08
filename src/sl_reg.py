@@ -30,7 +30,7 @@ class LinearRegression:
             self.r2_hist.append(R2(y, y_hat))
             self.time_hist.append(time.time() - start)
 
-    def fit_mini_batch(self, X, y, batch_size = 32):
+    def fit_mini_batch(self, X, y, batch_size = 32, tolerance = 1e-5):
         samples, features = X.shape
         self.w = np.zeros(features)
         self.b = 0
@@ -39,7 +39,8 @@ class LinearRegression:
         for _ in range(self.epochs):
             idx = np.random.permutation(samples)
             X, y = X[idx], y[idx]
-    
+
+            mse_prev = np.inf
             for i in range(batch_size):
                 X_i = X[i:i + batch_size]
                 y_i = y[i:i + batch_size]
@@ -48,11 +49,17 @@ class LinearRegression:
                 self.b -= self.rate * (2 / samples) * np.sum(y_hat - y_i)
 
                 y_hat_all= np.dot(X, self.w) + self.b
+                mse_curr = MSE(y, y_hat_all)
                 self.w_hist.append(self.w.copy())
                 self.b_hist.append(self.b)
                 self.mse_hist.append(MSE(y, y_hat_all))
                 self.r2_hist.append(R2(y, y_hat_all))
                 self.time_hist.append(time.time() - start)
+
+                if mse_prev - mse_curr < tolerance:
+                    return 
+
+                mse_prev = mse_curr
 
     def predict(self, X):
         return np.dot(X, self.w) + self.b
