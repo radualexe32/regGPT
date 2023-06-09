@@ -58,7 +58,7 @@ def train_pol_reg(rate = 0.001, epochs = 1000, degree = 2, mini_batch = False, s
     return reg
 
 def plot_pol_reg(mini_batch = False, degree = 2):
-    X, y, X_train, X_test, y_train, y_test = data(degree)
+    X, y, X_train, X_test, y_train, y_test = data(degree = degree)
     reg = train_pol_reg(mini_batch = mini_batch)
     y_hat = reg.predict(X_train)
 
