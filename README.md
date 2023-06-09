@@ -1,13 +1,20 @@
 # RegGPT
 
-A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`.
+A machine learning model that automatically fits the best regression line to any given dataset whose entries are of the form `(x, y)`. Only quantitative data works (no variable encoding yet) compatible with linear, logistic and polynomial regression.
 
-<table>
-  <tr>
-    <td><img src = "./assets/slr.gif" alt = "SLR animation" height = "300px"></td>
-    <td><img src = "./assets/pol_reg.gif" alt = "PolReg animation" height = "300px"></td>
-  </tr>
-</table>
+## Showcase 
+
+Using the [sklearn](https://scikit-learn.org/stable/) we can create a linear regression data set. The `LinearRegression` class handles the training.
+
+<p align = "center">
+  <img src = "./assets/slr.gif" alt = "SLR animation" height = "300px">
+</p>
+
+Not all data is linear. As such the `PolynomialRegression` is used to update the weights and biases according to non-linear data. Note that you can test the accuracy of this model by inputting the `degree` parameter in either the `train_pol_reg()` or `plot_pol_reg()` function. 
+
+<p align = "center">
+  <img src = "./assets/pol_reg.gif" alt = "PolReg animation" height = "300px">
+</p>
 
 ## Dependencies
 
