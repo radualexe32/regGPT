@@ -38,7 +38,7 @@ from langchain.requests import TextRequestsWrapper
 from langchain.tools.json.tool import JsonSpec
 from flask import Flask
 from dotenv import load_dotenv
-from reg import Regression
+from regGPT import Regression
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
