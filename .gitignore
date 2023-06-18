@@ -21,5 +21,6 @@ venv.bak/
 # VS Code
 .vscode/
 
+# Some extra files and directories
 .DS_STORE
 flagged/

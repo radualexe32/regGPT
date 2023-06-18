@@ -35,3 +35,13 @@ python3 source/api_key.py --openai <your_api_key>
 ```
 
 As of June 13, 2023, the API key does not work for using any GPT-4 model (none will be called anyway). In the future make sure that you have the necessary permissions to run the GPT-4 model.
+
+## Gradio
+
+The UI for this project is built using [Gradio](https://gradio.app/). The current state is very basic. Run the following command to run the app locally.
+
+```bash
+python3 src/models/pipeline.py
+```
+
+Make sure to have a couple things at hand. Some sort of `*.csv` file, and the correlation coefficient of the data. Couple errors involve parsing output with [pydantic](https://pydantic-docs.helpmanual.io/) so as of right now make sure to input `linear regression, logistic regression, polynomial regression` into the text box.
