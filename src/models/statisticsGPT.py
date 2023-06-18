@@ -38,17 +38,27 @@ from langchain.requests import TextRequestsWrapper
 from langchain.tools.json.tool import JsonSpec
 from flask import Flask
 from dotenv import load_dotenv
+import gradio as gr
 from regGPT import Regression
+from train_regression import train
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class StatisticsGPT(BaseModel):
-    htests: Dict[str, List[str]] = Field(
-        title="Statistics Tests",
-        description="Dictionary for hypothesis test and prediction analysis tools."
-    )
+    # htests: Dict[str, List[str]] = Field(
+    #    title="Statistics Tests",
+    #    description="Dictionary for hypothesis test and prediction analysis tools."
+    # )
+    h_tests: List[str] = Field(
+        alias="Hypothesis Tests", description="Hypothesis test tools to conduct")
+    reg_model_tests: List[str] = Field(
+        alias="Regression Model Tests", description="Tests to conduct on the regression model itself")
+    further_reg: List[str] = Field(
+        alias="Further Regression Suggestions", description="Further regression model suggestions to use")
+    pred_tools: List[str] = Field(alias="Prediction Analysis",
+                                  description="Prediction tools useful for the data inputted")
 
 
 def inference_generator(variables={}, classfication={}, stats={}, reg_model=Regression(), degree=None, relation=None):
@@ -60,32 +70,47 @@ def inference_generator(variables={}, classfication={}, stats={}, reg_model=Regr
     with open(template_file_path, 'r') as file:
         template_string = file.read()
 
+    parser = PydanticOutputParser(pydantic_object=StatisticsGPT)
     prompt = ChatPromptTemplate.from_template(template=template_string)
+
+    # Specify the model
+    model = ChatOpenAI(temperature=0.7, model="gpt-3.5-turbo")
     response = prompt.format_messages(
-        variable_ind=None,
-        classification_ind=None,
-        variable_dep=None,
-        classification_dep=None,
-        coeff_line=None,
-        MSE=None,
-        R2=None,
-        correlation=None,
+        variable_ind=list(variables.keys())[0],
+        classification_ind=variables[list(variables.keys())[0]],
+        variable_dep=list(variables.keys())[1],
+        classification_dep=variables[list(variables.keys())[1]],
+        coeff_line=reg_model.get(),
+        MSE=stats["MSE"],
+        R2=stats["R2"],
+        correlation=stats["correlation"],
         degree=degree,
         relationship=relation
     )
+    output = model(response)
+    return parser.parse(output.content)
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return '<p>Hello world!</p>'
+# @app.route('/')
+# def index():
+#     return '<p>Hello world!</p>'
 
 
-def main():
-    raise NotImplementedError
+# def main():
+#     # Dummy inputs
+#     reg = train()
+#     variables = {"percentage change in income": "continuous continuous",
+#                  "housing prices in USD": "continuous continuous"}
+#     stats = {"MSE": 32.469417572021484, "R2": 0.9964616956476273,
+#              "correlation": 0.99822998046875}
+
+#     out = inference_generator(
+#         variables=variables, stats=stats, reg_model=reg, degree=1, relation="positive linears")
+#     print(out)
 
 
-if __name__ == "__main__":
-    inference_generator()
+# if __name__ == "__main__":
+#     main()

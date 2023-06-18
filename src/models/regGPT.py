@@ -3,16 +3,19 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import mean_squared_error, r2_score
 
+
 class Regression(nn.Module):
-    def __init__(self, input_dim, output_dim, regression_type, degree = None):
+    def __init__(self, input_dim=100, output_dim=1, regression_type="linear", degree=None):
         super(Regression, self).__init__()
 
         self.regression_type = regression_type
         self.linear = nn.Linear(input_dim, output_dim)
 
+        # Create correct number of linear layers according to degree inputted
         if regression_type == "polynomial":
             self.degree = degree
-            self.poly = nn.ModuleList([nn.Linear(input_dim, output_dim) for _ in range(degree)])
+            self.poly = nn.ModuleList(
+                [nn.Linear(input_dim, output_dim) for _ in range(degree)])
         elif regression_type == "logistic":
             self.sigmoid = nn.Sigmoid()
 
@@ -21,20 +24,23 @@ class Regression(nn.Module):
         else:
             self.criterion = nn.MSELoss()
 
-        self.optimizer = optim.SGD(self.parameters(), lr = 0.01)
+        self.optimizer = optim.SGD(self.parameters(), lr=0.01)
+        self.mse, self.r2, self.correlation = [None for _ in range(3)]
 
     def forward(self, x):
         if self.regression_type == "polynomial":
-            x = sum([layer(x ** i) for i, layer in enumerate(self.poly, start = 1)])
+            x = sum([layer(x ** i)
+                    for i, layer in enumerate(self.poly, start=1)])
         else:
             x = self.linear(x)
-        
+
         if self.regression_type == "logistic":
             x = self.sigmoid(x)
-            
+
         return x
-    
+
     def train_step(self, inputs, targets):
+        # Forward pass, calculate loss and update weights through backprop
         outputs = self(inputs)
         loss = self.criterion(outputs, targets)
         self.optimizer.zero_grad()
@@ -42,7 +48,7 @@ class Regression(nn.Module):
         self.optimizer.step()
 
         return loss.item()
-    
+
     def train(self, data_loader, epochs):
         for epoch in range(epochs):
             for inputs, targets in data_loader:
@@ -61,11 +67,21 @@ class Regression(nn.Module):
 
             mse_after = mean_squared_error(true_values, predictions)
             r2_after = r2_score(true_values, predictions)
+            self.mse, self.r2 = mse_after, r2_after
 
-        print("After training:")
-        print(f"MSE: {mse_after}")
-        print(f"R2: {r2_after}")
-        print(f"Weights: {self.state_dict()}")
+        # print("After training:")
+        # print(f"MSE: {mse_after}")
+        # print(f"R2: {r2_after}")
+        # print(f"Weights: {self.state_dict()}")
 
- 
+    def get(self):
+        return self.state_dict()
 
+    def mse(self):
+        return self.mse
+
+    def r2(self):
+        return self.r2
+
+    def correlation(self):
+        return self.correlation

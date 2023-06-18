@@ -40,6 +40,8 @@ def classifier(data=[], correlation=None, reg_types=[]):
         template_string = file.read()
 
     parser = PydanticOutputParser(pydantic_object=ClassifierObjectJSON)
+
+    # Specify the model
     model = ChatOpenAI(temperature=0.7, model="gpt-3.5-turbo")
     prompt = ChatPromptTemplate.from_template(template=template_string)
     response = prompt.format_messages(
@@ -60,24 +62,33 @@ def classifier(data=[], correlation=None, reg_types=[]):
 #    raise NotImplementedError
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return '<p>Hello world!</p>'
+# @app.route('/')
+# def index():
+#     return '<p>Hello world!</p>'
 
 
-def main():
-    # Test data
-    data = [["value of average housing price in million", "percentage change in household income"], [0, 0], [0.5, 0.25], [1, 1], [1.5, 2.25], [2, 4], [2.5, 6.25], [3, 9], [
-        3.5, 12.25], [4, 16], [4.5, 20.25], [5, 25], [5.5, 30.25], [6, 36], [6.5, 42.25], [7, 49], [7.5, 56.25], [8, 64], [8.5, 72.25], [9, 81], [9.5, 90.25], [10, 100]]
-    correlation = 0
-    reg_types = ["Linear regression",
-                 "Polynomial regression", "Logistic regression"]
-    out = classifier(data=data, correlation=correlation, reg_types=reg_types)
-    print(out)
+# def main():
+#     # Test data
+#     data = [["value of average housing price in million", "percentage change in household income"], [0, 0], [0.5, 0.25], [1, 1], [1.5, 2.25], [2, 4], [2.5, 6.25], [3, 9], [
+#         3.5, 12.25], [4, 16], [4.5, 20.25], [5, 25], [5.5, 30.25], [6, 36], [6.5, 42.25], [7, 49], [7.5, 56.25], [8, 64], [8.5, 72.25], [9, 81], [9.5, 90.25], [10, 100]]
+
+#     data2 = [["type of drug treament (plabebo or vit C)", "occurence of common cold"], [0, 0.2], [1, 0.8], [0, 0.1], [1, 0.9], [0, 0.3], [1, 0.7], [0, 0.4], [1, 0.6], [0, 0.15], [1, 0.85], [
+#         0, 0.25], [1, 0.75], [0, 0.35], [1, 0.65], [0, 0.05], [1, 0.95], [0, 0.1], [1, 0.9], [0, 0.2], [1, 0.8]]
+
+#     correlation = 0
+#     correlation2 = 0.936
+#     reg_types = ["Linear regression",
+#                  "Polynomial regression", "Logistic regression"]
+#     out = classifier(data=data, correlation=correlation, reg_types=reg_types)
+#     print(out)
+
+#     out2 = classifier(data=data2, correlation=correlation2,
+#                       reg_types=reg_types)
+#     print(out2)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
