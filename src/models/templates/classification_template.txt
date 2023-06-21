@@ -10,10 +10,14 @@ HEADER DATA: As described this is the name of the variables for both the indepen
 
 DATA VALUES: Everything that comes after the initial row are the actual data observations given the description given; i.e. the actual variable that is measured.
 
-To answer the following question, I want you to keep both of this data information I gave you above as well as the proper classification of the variables themselves that I gave you above on quantiative and qualitative data.
+To answer the following question, I want you to keep both of this data information I gave you above as well as the proper classification of the variables themselves that I gave you above on quantiative and qualitative data. 
 
 QUESTION: Given this following data set, I want you to classify the independent and dependent variables.
 
 {data}
 
-Moreover, given the information from this data set and a correlation coefficient {correlation} I want you to give me the appropriate regression model for this data set. The choices available are as follows {reg_types}. If the the regression type output is "polynomial" also give me a range of degrees within which the data set inputted APPEARS to follow. For the naming when outputting the keys of the JSON for the classification should be Independent Variable and Dependent Variable while for the regression type format the key as Regression Model and Degree Range for the last variable I asked from you; i.e. the degree type to use. If the Regression model is not "polynomial" set Degree Range to 1. For your response please format your output in JSON format and every output should be in strings.
+Moreover, given the information from this data set and a correlation coefficient {correlation} I want you to give me the appropriate regression model for this data set. The choices available are as follows {reg_types}. If the the regression type output is "polynomial" also give me a range of degrees within which the data set inputted APPEARS to follow. For the naming when outputting the keys of the JSON for the classification should be Independent Variable and Dependent Variable while for the regression type format the key as Regression Model and Degree Range for the last variable I asked from you; i.e. the degree type to use. 
+
+EXTRA INFORMATION: {extra}
+
+If the Regression model is not "polynomial" set Degree Range to 1. For your response please format your output in JSON format and every output should be in strings.

@@ -32,7 +32,7 @@ class ClassifierObjectJSON(BaseModel):
     )
 
 
-def classifier(data=[], correlation=None, reg_types=[]):
+def classifier(data=[], correlation=None, reg_types=[], extra=""):
     template_file_path = os.path.join(os.path.dirname(
         os.path.realpath(__file__)), 'templates', 'classification_template.txt')
 
@@ -47,7 +47,8 @@ def classifier(data=[], correlation=None, reg_types=[]):
     response = prompt.format_messages(
         data=data,
         correlation=correlation,
-        reg_types=reg_types
+        reg_types=reg_types,
+        extra=extra
     )
 
     output = model(response)
