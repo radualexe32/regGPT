@@ -1,11 +1,14 @@
+from imports import *
 from classificationGPT import *
 from regGPT import *
+from dataset import *
+from embeddings import *
 from statisticsGPT import *
-from flask import Flask
-import gradio as gr
-import pandas as pd
-from gradio import themes
-import torch
+
+
+class OutputFlaggingCallback(gr.FlaggingCallback):
+    def __init__(self):
+        self.output = []
 
 
 def nested(file):
@@ -36,33 +39,65 @@ def data_format(file):
     return X_tensor, y_tensor
 
 
-def data_classification(file, reg_types, number, text):
+def components_link(file, reg_types, number, text):
+    # Functional calls for linking all components together.
+    # 1. Preprocessing
+    # data_embedding = CSVEmbedding(file.name)
     data = nested(file.name)
-    out = classifier(data=data, correlation=number,
-                     reg_types=reg_types, extra=text)
+
+    # 2. Classifcation
+    out_class = classifier(
+        data=data, reg_types=reg_types, correlation=number, extra=text)
+
+    # 3. Reg line computation
+    reg = Regression(
+        input_dim=1, output_dim=1, regression_type=out_class.reg_type, degree=out_class.deg_range)
+    out_reg = reg_out(file.name, mod=reg)
+
+    # 4. Stats suggestions
+    classifier_dict = {
+        "ind_var": out_class.ind_var,
+        "dep_var": out_class.dep_var,
+    }
+    out_stats = inference_generator(
+        variables=classifier_dict, reg_model=out_reg)
+
+    stats_reg = {"MSE": out_reg.get_mse(), "R2": out_reg.get_r2(),
+                 "Correlation": out_reg.get_correlation()}
 
     class_str = """
-    The following information is useful for your regression analysis. Does this sound right?
+    Classification model:
+    {out_class}
 
-    Independent Variable: {ind_var}
-    Dependent Variable: {dep_var}
-    Regression Type: {reg_type}
-    Degree Range: {deg_range}
+    Regression model:
+    {out_reg}
+
+    Relevant stats:
+    {stats_reg}
+
+    Statistics suggestions:
+    {out_stats}
     """
-    return class_str.format(ind_var=out.ind_var, dep_var=out.dep_var, reg_type=out.reg_type, deg_range=out.deg_range)
+    return class_str.format(out_class=out_class, out_reg=out_reg.get(), stats_reg=stats_reg, out_stats=out_stats)
 
 
-def reg_out():
-    raise NotImplementedError
+def reg_out(file, mod=Regression()):
+    # Create data loaders for training and validation
+    train_data = RegDataset(file)
+    train_loader = train_data.get_dataloader()
 
+    val_data = RegDataset(file, train=False)
+    val_loader = val_data.get_dataloader()
 
-def stats_suggestions():
-    raise NotImplementedError
+    # Train model
+    mod.train(train_loader, val_loader, epochs=1000)
+    return mod
 
 
 def gradio_interface():
+    # callback = OutputFlaggingCallback()
     iface = gr.Interface(
-        fn=data_classification,
+        fn=components_link,
         inputs=[
             gr.components.File(label="Data File"),
             gr.components.CheckboxGroup(
@@ -72,27 +107,12 @@ def gradio_interface():
             gr.components.Textbox(label="Extra Information")
         ],
         outputs="text",
+        flagging_callback=gr.SimpleCSVLogger(),
         title="🚀 regGPT",
-        description=".RegGPT is a tool that helps you find the best regression model given some dataset and gives you suggestions on the types of tests that would elevate your statistical analysis. Before you begin, please make sure that your data is in a CSV file format, have a correlation coefficient handy and a general idea of what regression types you should use. Of course the last case is a bit special since you can always check all of the boxes if you are not sure. But if you want a more specific query, any extra information you can give to model will help it give you a better answer."
+        description="RegGPT is a tool that helps you find the best regression model given some dataset and gives you suggestions on the types of tests that would elevate your statistical analysis. Before you begin, please make sure that your data is in a CSV file format, have a correlation coefficient handy and a general idea of what regression types you should use. Of course the last case is a bit special since you can always check all of the boxes if you are not sure. But if you want a more specific query, any extra information you can give to model will help it give you a better answer."
     )
     iface.launch()
 
 
-# app = Flask(__name__)
-#
-#
-
-# @app.route('/')
-# def index():
-#    # Get user inputs
-#    return '<p>Hello world!</p>'
-#
-#
-# def main():
-#    print("Pipeline for linking models together")
-#
-#
-
 if __name__ == "__main__":
-    # main()
     gradio_interface()

@@ -4,7 +4,7 @@ DATA INFORMATION: Suppose that we have a dataset with x (independent) variable d
 
 Given this make sure to remember specifically the variable names and their classification to asnwer the question to the best of your ability.
 
-INTIAL ANALYSIS: A linear regression model was ran and returned the line {coeff_line} with MSE of {MSE}, R^2 coefficient of {R2}, and correlation of {correlation}. The visualization of the data in a scatter plot with the line shown shows a degree {degree} relationship with a {relationship} relationship.
+INTIAL ANALYSIS: A linear regression model was ran and returned the line {coeff_line} with MSE of {MSE}, R^2 coefficient of {R2}, and correlation of {correlation}.
 
 Finally, you are ready to given the answer. The purpose of the initial analysis is to curate your answer to fit further statistical analysis for not only that data type but also from the regression line used.
 

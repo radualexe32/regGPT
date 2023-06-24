@@ -1,12 +1,8 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from sklearn.metrics import mean_squared_error, r2_score
-from scipy.stats import pearsonr
+from imports import *
 
 
 class Regression(nn.Module):
-    def __init__(self, input_dim=100, output_dim=1, regression_type="linear", degree=None):
+    def __init__(self, input_dim=100, output_dim=1, regression_type="linear", degree=1):
         super(Regression, self).__init__()
 
         self.regression_type = regression_type
@@ -51,31 +47,6 @@ class Regression(nn.Module):
         self.optimizer.step()
 
         return loss.item()
-
-    # def train(self, data_loader, epochs):
-    #     for epoch in range(epochs):
-    #         for inputs, targets in data_loader:
-    #             loss = self.train_step(inputs, targets)
-
-    #         if epoch == 0 or epoch == epochs - 1:
-    #             print(f"Epoch {epoch + 1} / {epochs} Loss: {loss}")
-
-    #     with torch.no_grad():
-    #         predictions = []
-    #         true_values = []
-    #         for inputs, targets in data_loader:
-    #             outputs = self(inputs)
-    #             predictions.extend(outputs.numpy())
-    #             true_values.extend(targets.numpy())
-
-    #         mse_after = mean_squared_error(true_values, predictions)
-    #         r2_after = r2_score(true_values, predictions)
-    #         self.mse, self.r2 = mse_after, r2_after
-
-    #     print("After training:")
-    #     print(f"MSE: {mse_after}")
-    #     print(f"R2: {r2_after}")
-    #     print(f"Weights: {self.state_dict()}")
 
     def train(self, train_loader, val_loader, epochs):
         for epoch in range(epochs):

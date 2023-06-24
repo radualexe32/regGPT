@@ -24,3 +24,6 @@ venv.bak/
 # Some extra files and directories
 .DS_STORE
 flagged/
+
+# Flagged files from gradio 
+flagged/

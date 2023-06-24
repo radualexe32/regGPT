@@ -1,16 +1,16 @@
-from sklearn.datasets import make_regression
-from sklearn.model_selection import train_test_split
-import torch
-from torch.utils.data import TensorDataset, DataLoader
+from imports import *
 from regGPT import Regression
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def train(reg_type="linear", degree=1):
     n_samples, n_features = 100, 1
     X, y = make_regression(n_samples=n_samples, n_features=n_features, noise=5)
     y = y ** degree
+    df = pd.DataFrame(data=X, columns=['Housing Prices (USD)'])
+    df['Percentage Change in Income (USD)'] = y
+
+    df.to_csv('test .csv', index=False)
 
     # Split the data into training and validation sets
     X_train, X_val, y_train, y_val = train_test_split(
@@ -48,7 +48,7 @@ def train(reg_type="linear", degree=1):
 
 
 if __name__ == "__main__":
-    mod = train("polynomial", 3)
+    mod = train("linear", 1)
     print(mod.get())
     mse, r2, corr = mod.get_mse(), mod.get_r2(), mod.get_correlation()
     print(f"MSE: {mse} R2: {r2} Correlation: {corr}")
