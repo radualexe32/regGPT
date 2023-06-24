@@ -3,7 +3,7 @@ from regGPT import Regression
 import matplotlib.pyplot as plt
 
 
-def train(reg_type="linear", degree=1):
+def train(reg_type="linear", degree=1, graph=True):
     n_samples, n_features = 100, 1
     X, y = make_regression(n_samples=n_samples, n_features=n_features, noise=5)
     y = y ** degree
@@ -31,12 +31,13 @@ def train(reg_type="linear", degree=1):
     x_line_tensor = torch.tensor(x_line, dtype=torch.float32).unsqueeze(1)
     y_line = model(x_line_tensor).detach().numpy()
 
-    # Plot the data and the model's line
-    plt.figure(figsize=(10, 5))
-    plt.scatter(X_train, y_train)
-    plt.plot(x_line, y_line, color='r', label='reg line')
-    plt.legend()
-    plt.show()
+    if graph:
+        # Plot the data and the model's line
+        plt.figure(figsize=(10, 5))
+        plt.scatter(X_train, y_train)
+        plt.plot(x_line, y_line, color='r', label='reg line')
+        plt.legend()
+        plt.show()
 
     return model
 
