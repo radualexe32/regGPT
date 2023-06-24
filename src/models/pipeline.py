@@ -43,7 +43,10 @@ def components_link(file, reg_types, number, text):
     # Functional calls for linking all components together.
     # 1. Preprocessing
     # data_embedding = CSVEmbedding(file.name)
-    data = nested(file.name)
+    if isinstance(file, str):
+        data = nested(file)
+    else:
+        data = nested(file.name)
 
     # 2. Classifcation
     out_class = classifier(
@@ -52,7 +55,11 @@ def components_link(file, reg_types, number, text):
     # 3. Reg line computation
     reg = Regression(
         input_dim=1, output_dim=1, regression_type=out_class.reg_type, degree=out_class.deg_range)
-    out_reg = reg_out(file.name, mod=reg)
+
+    if isinstance(file, str):
+        out_reg = reg_out(file, mod=reg)
+    else:
+        out_reg = reg_out(file.name, mod=reg)
 
     # 4. Stats suggestions
     classifier_dict = {
