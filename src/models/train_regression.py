@@ -7,10 +7,6 @@ def train(reg_type="linear", degree=1):
     n_samples, n_features = 100, 1
     X, y = make_regression(n_samples=n_samples, n_features=n_features, noise=5)
     y = y ** degree
-    df = pd.DataFrame(data=X, columns=['Housing Prices (USD)'])
-    df['Percentage Change in Income (USD)'] = y
-
-    df.to_csv('test .csv', index=False)
 
     # Split the data into training and validation sets
     X_train, X_val, y_train, y_val = train_test_split(

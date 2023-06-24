@@ -1,5 +1,4 @@
 from imports import *
-from regGPT import Regression
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
