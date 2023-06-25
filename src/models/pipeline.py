@@ -24,19 +24,19 @@ def nested(file):
     return nested_list
 
 
-def data_format(file):
-    df = pd.read_csv(file)
-    cols = df.columns.tolist()
-    dep_col = cols[0]
-    ind_col = cols[1]
+# def data_format(file):
+#     df = pd.read_csv(file)
+#     cols = df.columns.tolist()
+#     dep_col = cols[0]
+#     ind_col = cols[1]
 
-    x = df[ind_col].values.tolist()
-    y = df[dep_col].values.tolist()
+#     x = df[ind_col].values.tolist()
+#     y = df[dep_col].values.tolist()
 
-    X_tensor = torch.tensor(x, dtype=torch.float32)
-    y_tensor = torch.tensor(y, dtype=torch.float32).unsqueeze(1)
+#     X_tensor = torch.tensor(x, dtype=torch.float32)
+#     y_tensor = torch.tensor(y, dtype=torch.float32).unsqueeze(1)
 
-    return X_tensor, y_tensor
+#     return X_tensor, y_tensor
 
 
 def components_link(file, reg_types, number, text):

@@ -10,7 +10,7 @@ class Regression(nn.Module):
         if regression_type == "polynomial":
             self.degree = degree
             self.poly = nn.ModuleList(
-                [nn.Linear(input_dim, output_dim) for _ in range(degree)])
+                [nn.Linear(input_dim, output_dim) for _ in range(degree + 1)])
         elif regression_type == "logistic":
             self.linear = nn.Linear(input_dim, output_dim)
             self.sigmoid = nn.Sigmoid()
