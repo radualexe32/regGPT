@@ -40,10 +40,3 @@ def train(reg_type="linear", degree=1, graph=True):
         plt.show()
 
     return model
-
-
-# if __name__ == "__main__":
-#     mod = train("linear", 1)
-#     print(mod.get())
-#     mse, r2, corr = mod.get_mse(), mod.get_r2(), mod.get_correlation()
-#     print(f"MSE: {mse} R2: {r2} Correlation: {corr}")
