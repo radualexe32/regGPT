@@ -6,11 +6,12 @@ import matplotlib.pyplot as plt
 def train(reg_type="linear", degree=1, graph=True):
     n_samples, n_features = 100, 1
     X, y = make_regression(n_samples=n_samples, n_features=n_features, noise=5)
-    y = y ** degree
+    y = y**degree
 
     # Split the data into training and validation sets
     X_train, X_val, y_train, y_val = train_test_split(
-        X, y, test_size=0.2, random_state=42)
+        X, y, test_size=0.2, random_state=42
+    )
 
     X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train, dtype=torch.float32).unsqueeze(1)
@@ -35,8 +36,12 @@ def train(reg_type="linear", degree=1, graph=True):
         # Plot the data and the model's line
         plt.figure(figsize=(10, 5))
         plt.scatter(X_train, y_train)
-        plt.plot(x_line, y_line, color='r', label='reg line')
+        plt.plot(x_line, y_line, color="r", label="reg line")
         plt.legend()
         plt.show()
 
     return model
+
+
+if __name__ == "__main__":
+    mod = train()

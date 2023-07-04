@@ -50,11 +50,16 @@ def components_link(file, reg_types, number, text):
 
     # 2. Classifcation
     out_class = classifier(
-        data=data, reg_types=reg_types, correlation=number, extra=text)
+        data=data, reg_types=reg_types, correlation=number, extra=text
+    )
 
     # 3. Reg line computation
     reg = Regression(
-        input_dim=1, output_dim=1, regression_type=out_class.reg_type, degree=out_class.deg_range)
+        input_dim=1,
+        output_dim=1,
+        regression_type=out_class.reg_type,
+        degree=int(out_class.deg_range),
+    )
 
     if isinstance(file, str):
         out_reg = reg_out(file, mod=reg)
@@ -66,11 +71,13 @@ def components_link(file, reg_types, number, text):
         "ind_var": out_class.ind_var,
         "dep_var": out_class.dep_var,
     }
-    out_stats = inference_generator(
-        variables=classifier_dict, reg_model=out_reg)
+    out_stats = inference_generator(variables=classifier_dict, reg_model=out_reg)
 
-    stats_reg = {"MSE": out_reg.get_mse(), "R2": out_reg.get_r2(),
-                 "Correlation": out_reg.get_correlation()}
+    stats_reg = {
+        "MSE": out_reg.get_mse(),
+        "R2": out_reg.get_r2(),
+        "Correlation": out_reg.get_correlation(),
+    }
 
     class_str = """
     Classification model:
@@ -85,7 +92,12 @@ def components_link(file, reg_types, number, text):
     Statistics suggestions:
     {out_stats}
     """
-    return class_str.format(out_class=out_class, out_reg=out_reg.get(), stats_reg=stats_reg, out_stats=out_stats)
+    return class_str.format(
+        out_class=out_class,
+        out_reg=out_reg.get(),
+        stats_reg=stats_reg,
+        out_stats=out_stats,
+    )
 
 
 def reg_out(file, mod=Regression()):
@@ -108,15 +120,17 @@ def gradio_interface():
         inputs=[
             gr.components.File(label="Data File"),
             gr.components.CheckboxGroup(
-                ["linear", "polynomial", "logistic"], label="Regression Types"),
-            gr.components.Slider(minimum=-1, maximum=1,
-                                 step=0.0001, label="Correlation"),
-            gr.components.Textbox(label="Extra Information")
+                ["linear", "polynomial", "logistic"], label="Regression Types"
+            ),
+            gr.components.Slider(
+                minimum=-1, maximum=1, step=0.0001, label="Correlation"
+            ),
+            gr.components.Textbox(label="Extra Information"),
         ],
         outputs="text",
         flagging_callback=gr.SimpleCSVLogger(),
         title="🚀 regGPT",
-        description="RegGPT is a tool that helps you find the best regression model given some dataset and gives you suggestions on the types of tests that would elevate your statistical analysis. Before you begin, please make sure that your data is in a CSV file format, have a correlation coefficient handy and a general idea of what regression types you should use. Of course the last case is a bit special since you can always check all of the boxes if you are not sure. But if you want a more specific query, any extra information you can give to model will help it give you a better answer."
+        description="RegGPT is a tool that helps you find the best regression model given some dataset and gives you suggestions on the types of tests that would elevate your statistical analysis. Before you begin, please make sure that your data is in a CSV file format, have a correlation coefficient handy and a general idea of what regression types you should use. Of course the last case is a bit special since you can always check all of the boxes if you are not sure. But if you want a more specific query, any extra information you can give to model will help it give you a better answer.",
     )
     iface.launch()
 

@@ -16,16 +16,26 @@ from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain, LLMChain
 from langchain.document_loaders import (
-    PyPDFLoader, CSVLoader, UnstructuredPowerPointLoader, UnstructuredURLLoader
+    PyPDFLoader,
+    CSVLoader,
+    UnstructuredPowerPointLoader,
+    UnstructuredURLLoader,
 )
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory, ConversationTokenBufferMemory
 from langchain.agents import (
-    AgentType, initialize_agent, Tool, AgentExecutor, LLMSingleActionAgent,
-    AgentOutputParser, create_json_agent
+    AgentType,
+    initialize_agent,
+    Tool,
+    AgentExecutor,
+    LLMSingleActionAgent,
+    AgentOutputParser,
+    create_json_agent,
 )
 from langchain.prompts import (
-    MessagesPlaceholder, ChatPromptTemplate, BaseChatPromptTemplate
+    MessagesPlaceholder,
+    ChatPromptTemplate,
+    BaseChatPromptTemplate,
 )
 from langchain.schema import AgentAction, AgentFinish, HumanMessage
 from langchain.output_parsers import PydanticOutputParser

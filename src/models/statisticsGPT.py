@@ -1,5 +1,6 @@
 from imports import *
 from regGPT import Regression
+
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -11,22 +12,32 @@ class StatisticsGPT(BaseModel):
     #    description="Dictionary for hypothesis test and prediction analysis tools."
     # )
     h_tests: List[str] = Field(
-        alias="Hypothesis Tests", description="Hypothesis test tools to conduct")
+        alias="Hypothesis Tests", description="Hypothesis test tools to conduct"
+    )
     reg_model_tests: List[str] = Field(
-        alias="Regression Model Tests", description="Tests to conduct on the regression model itself")
+        alias="Regression Model Tests",
+        description="Tests to conduct on the regression model itself",
+    )
     further_reg: List[str] = Field(
-        alias="Further Regression Suggestions", description="Further regression model suggestions to use")
-    pred_tools: List[str] = Field(alias="Prediction Analysis",
-                                  description="Prediction tools useful for the data inputted")
+        alias="Further Regression Suggestions",
+        description="Further regression model suggestions to use",
+    )
+    pred_tools: List[str] = Field(
+        alias="Prediction Analysis",
+        description="Prediction tools useful for the data inputted",
+    )
 
 
 def inference_generator(variables={}, reg_model=Regression()):
     # llm = OpenAI()
     # chat_model = ChatOpenAI(llm)
-    template_file_path = os.path.join(os.path.dirname(
-        os.path.realpath(__file__)), 'templates', 'statistics_template.txt')
+    template_file_path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "templates",
+        "statistics_template.txt",
+    )
 
-    with open(template_file_path, 'r') as file:
+    with open(template_file_path, "r") as file:
         template_string = file.read()
 
     parser = PydanticOutputParser(pydantic_object=StatisticsGPT)

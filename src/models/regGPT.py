@@ -10,7 +10,8 @@ class Regression(nn.Module):
         if regression_type == "polynomial":
             self.degree = degree
             self.poly = nn.ModuleList(
-                [nn.Linear(input_dim, output_dim) for _ in range(degree)])
+                [nn.Linear(input_dim, output_dim) for _ in range(degree)]
+            )
         elif regression_type == "logistic":
             self.linear = nn.Linear(input_dim, output_dim)
             self.sigmoid = nn.Sigmoid()
@@ -24,13 +25,13 @@ class Regression(nn.Module):
 
         self.optimizer = optim.SGD(self.parameters(), lr=0.01)
         self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-            self.optimizer, 'min', patience=10)
+            self.optimizer, "min", patience=10
+        )
         self.mse, self.r2, self.correlation = [None for _ in range(3)]
 
     def forward(self, x):
         if self.regression_type == "polynomial":
-            x = sum([layer(x ** i)
-                    for i, layer in enumerate(self.poly, start=1)])
+            x = sum([layer(x**i) for i, layer in enumerate(self.poly, start=1)])
         else:
             x = self.linear(x)
 
@@ -71,7 +72,8 @@ class Regression(nn.Module):
 
             if epoch == 0 or epoch == epochs - 1:
                 print(
-                    f"Epoch {epoch + 1} / {epochs} Loss: {loss} Validation Loss: {val_loss}")
+                    f"Epoch {epoch + 1} / {epochs} Loss: {loss} Validation Loss: {val_loss}"
+                )
 
                 mse_after = mean_squared_error(true_vals, preds)
                 r2_after = r2_score(true_vals, preds)
