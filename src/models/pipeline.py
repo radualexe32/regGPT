@@ -5,6 +5,12 @@ from dataset import *
 from embeddings import *
 from statisticsGPT import *
 
+parser = argparse.ArgumentParser(
+    description='Use regGPT to predict values for a given dataset')
+parser.add_argument('--data', type=str, required=True,
+                    help='Path to CSV file containing dataset')
+args = parser.parse_args()
+
 
 class OutputFlaggingCallback(gr.FlaggingCallback):
     def __init__(self):
@@ -71,7 +77,8 @@ def components_link(file, reg_types, number, text):
         "ind_var": out_class.ind_var,
         "dep_var": out_class.dep_var,
     }
-    out_stats = inference_generator(variables=classifier_dict, reg_model=out_reg)
+    out_stats = inference_generator(
+        variables=classifier_dict, reg_model=out_reg)
 
     stats_reg = {
         "MSE": out_reg.get_mse(),
@@ -113,6 +120,21 @@ def reg_out(file, mod=Regression()):
     return mod
 
 
+def cli():
+    correlation_coefficient = input(
+        "Enter the correlation coefficient (default: 0.5): ")
+    if correlation_coefficient == '':
+        correlation_coefficient = 0.5
+
+    regression_type = input(
+        "Choose the type of regression (1-linear, 2-polynomial, 3-logistic): ")
+
+    out = components_link(args.data, regression_type,
+                          correlation_coefficient, "")
+    print(out)
+    # TODO: Start of personalized AI chatbot
+
+
 def gradio_interface():
     # callback = OutputFlaggingCallback()
     iface = gr.Interface(
@@ -136,4 +158,5 @@ def gradio_interface():
 
 
 if __name__ == "__main__":
-    gradio_interface()
+    # gradio_interface()
+    cli()

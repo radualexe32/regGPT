@@ -18,7 +18,7 @@ source scripts/build.sh
 To use your own [OpenAI](https://platform.openai.com/overview) API key run the following command while in the root directory of the project.
 
 ```bash
-python3 source/api_key.py --openai <your_api_key>
+python3 scripts/api_key.py --openai <your_api_key>
 ```
 
 As of June 13, 2023, the API key does not work for using any GPT-4 model (none will be called anyway). In the future make sure that you have the necessary permissions to run the GPT-4 model.
