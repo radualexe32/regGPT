@@ -5,11 +5,14 @@ from dataset import *
 from embeddings import *
 from statisticsGPT import *
 
-parser = argparse.ArgumentParser(
-    description='Use regGPT to predict values for a given dataset')
-parser.add_argument('--data', type=str, required=True,
-                    help='Path to CSV file containing dataset')
-args = parser.parse_args()
+# parser = argparse.ArgumentParser(
+#     description='Use regGPT to predict values for a given dataset')
+# parser.add_argument('--data', type=str, required=True,
+#                     help='Path to CSV file containing dataset')
+# args = parser.parse_args()
+
+# GLOBAL
+REG_TYPES = ["simple", "multi", "polynomial", "logistic"]
 
 
 class OutputFlaggingCallback(gr.FlaggingCallback):
@@ -120,17 +123,21 @@ def reg_out(file, mod=Regression()):
     return mod
 
 
-def cli():
+def cli(data):
     correlation_coefficient = input(
         "Enter the correlation coefficient (default: 0.5): ")
     if correlation_coefficient == '':
         correlation_coefficient = 0.5
 
-    regression_type = input(
+    regression_num = input(
         "Choose the type of regression (1-simple, 2-multi, 3-polynomial, 4-logistic): ")
+    regression_type = []
 
-    out = components_link(args.data, regression_type,
-                          correlation_coefficient, "")
+    for c in regression_num:
+        regression_type.append(REG_TYPES[int(c) - 1])
+
+    out = components_link(data, regression_type,
+                          float(correlation_coefficient), "")
     print(out)
     # TODO: Start of personalized AI chatbot
 
@@ -157,6 +164,29 @@ def gradio_interface():
     iface.launch()
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description='Use regGPT to predict values for a given dataset')
+    parser.add_argument('--gradio', action='store_true',
+                        help='Run the gradio interface')
+    parser.add_argument('--cli', action='store_true',
+                        help='Run the command line interface')
+    parser.add_argument('--data', type=str,
+                        help='Path to CSV file containing dataset')
+    args = parser.parse_args()
+
+    if args.gradio:
+        gradio_interface()
+    elif args.cli:
+        if args.data is None:
+            print("Error: --data must be specified when running --cli")
+        else:
+            cli(args.data)
+    else:
+        print("Error: either --cli or --gradio must be specified")
+
+
 if __name__ == "__main__":
     # gradio_interface()
-    cli()
+    # cli()
+    main()

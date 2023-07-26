@@ -28,7 +28,15 @@ As of June 13, 2023, the API key does not work for using any GPT-4 model (none w
 The UI for this project is built using [Gradio](https://gradio.app/). The current state is very basic. Run the following command to run the app locally.
 
 ```bash
-python3 src/models/pipeline.py
+python3 src/models/pipeline.py --gradio
 ```
 
 Make sure to have a couple of things at hand. Some sort of `*.csv` file, and the correlation coefficient of the data.
+
+## CLI
+
+If you prefer you can use the command line interface. Run the following command to run,
+
+```bash
+python3 src/models/pipeline.py --cli --data <path_to_data>
+```
