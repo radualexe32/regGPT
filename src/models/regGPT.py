@@ -15,6 +15,9 @@ class Regression(nn.Module):
         elif regression_type == "logistic":
             self.linear = nn.Linear(input_dim, output_dim)
             self.sigmoid = nn.Sigmoid()
+        elif regression_type == "multi":
+            self.linear = nn.ModuleList(
+                [nn.Linear(1, output_dim) for _ in range(input_dim)])
         else:
             self.linear = nn.Linear(input_dim, output_dim)
 
@@ -31,7 +34,11 @@ class Regression(nn.Module):
 
     def forward(self, x):
         if self.regression_type == "polynomial":
-            x = sum([layer(x**i) for i, layer in enumerate(self.poly, start=1)])
+            x = sum([layer(x**i)
+                    for i, layer in enumerate(self.poly, start=1)])
+        elif self.regression_type == "multi":
+            x = sum([linear(x[:, i].unsqueeze(-1))
+                    for i, linear in enumerate(self.linear)])
         else:
             x = self.linear(x)
 

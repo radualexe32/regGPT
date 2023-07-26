@@ -127,7 +127,7 @@ def cli():
         correlation_coefficient = 0.5
 
     regression_type = input(
-        "Choose the type of regression (1-linear, 2-polynomial, 3-logistic): ")
+        "Choose the type of regression (1-simple, 2-multi, 3-polynomial, 4-logistic): ")
 
     out = components_link(args.data, regression_type,
                           correlation_coefficient, "")
@@ -142,7 +142,7 @@ def gradio_interface():
         inputs=[
             gr.components.File(label="Data File"),
             gr.components.CheckboxGroup(
-                ["linear", "polynomial", "logistic"], label="Regression Types"
+                ["simple", "multi", "polynomial", "logistic"], label="Regression Types"
             ),
             gr.components.Slider(
                 minimum=-1, maximum=1, step=0.0001, label="Correlation"
