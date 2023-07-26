@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.mypy_cache/
 *.py[cod]
 *$py.class
 
@@ -18,12 +19,8 @@ ENV/
 env.bak/
 venv.bak/
 
-# VS Code
-.vscode/
-
 # Some extra files and directories
 .DS_STORE
-flagged/
 
 # Flagged files from gradio 
 flagged/
