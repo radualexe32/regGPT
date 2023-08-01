@@ -1,4 +1,11 @@
-from imports import *
+import openai
+import os
+from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import PydanticOutputParser
+from langchain.prompts import ChatPromptTemplate
+from typing import List
 from regGPT import Regression
 
 load_dotenv()
@@ -7,10 +14,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class StatisticsGPT(BaseModel):
-    # htests: Dict[str, List[str]] = Field(
-    #    title="Statistics Tests",
-    #    description="Dictionary for hypothesis test and prediction analysis tools."
-    # )
     h_tests: List[str] = Field(
         alias="Hypothesis Tests", description="Hypothesis test tools to conduct"
     )
@@ -29,8 +32,6 @@ class StatisticsGPT(BaseModel):
 
 
 def inference_generator(variables={}, reg_model=Regression()):
-    # llm = OpenAI()
-    # chat_model = ChatOpenAI(llm)
     template_file_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         "templates",

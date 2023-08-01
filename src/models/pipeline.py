@@ -1,17 +1,14 @@
-from imports import *
+import pandas as pd
+import gradio as gr
+import argparse
 from classificationGPT import *
 from regGPT import *
 from dataset import *
 from embeddings import *
 from statisticsGPT import *
+from rate import *
 
-# parser = argparse.ArgumentParser(
-#     description='Use regGPT to predict values for a given dataset')
-# parser.add_argument('--data', type=str, required=True,
-#                     help='Path to CSV file containing dataset')
-# args = parser.parse_args()
-
-# GLOBAL
+# GLOBAL VARS
 REG_TYPES = ["simple", "multi", "polynomial", "logistic"]
 
 
@@ -31,21 +28,6 @@ def nested(file):
         nested_list.append(curr_row)
 
     return nested_list
-
-
-# def data_format(file):
-#     df = pd.read_csv(file)
-#     cols = df.columns.tolist()
-#     dep_col = cols[0]
-#     ind_col = cols[1]
-
-#     x = df[ind_col].values.tolist()
-#     y = df[dep_col].values.tolist()
-
-#     X_tensor = torch.tensor(x, dtype=torch.float32)
-#     y_tensor = torch.tensor(y, dtype=torch.float32).unsqueeze(1)
-
-#     return X_tensor, y_tensor
 
 
 def components_link(file, reg_types, number, text):
@@ -139,7 +121,6 @@ def cli(data):
     out = components_link(data, regression_type,
                           float(correlation_coefficient), "")
     print(out)
-    # TODO: Start of personalized AI chatbot
 
 
 def gradio_interface():
@@ -187,6 +168,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # gradio_interface()
-    # cli()
     main()

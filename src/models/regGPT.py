@@ -1,4 +1,8 @@
-from imports import *
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from sklearn.metrics import mean_squared_error, r2_score
+from scipy.stats import pearsonr
 
 
 class Regression(nn.Module):
